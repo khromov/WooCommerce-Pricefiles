@@ -420,18 +420,6 @@ class WC_Pricefiles
     }
 
     /**
-     * Fired for each blog when the plugin is activated.
-     *
-     * @since    0.1.0
-     */
-    private function single_activate()
-    {
-        $this->init();
-        
-        $this->woocomemrce_pricefiles_add_manufacturer_attribute();
-    }
-
-    /**
      * Fired for each blog when the plugin is deactivated.
      *
      * @since    0.1.0
@@ -458,40 +446,6 @@ class WC_Pricefiles
 
         return array_merge($plugin_links, $links);
     }
-
-    /**
-     * Add Manufacturer product attribute if not exists
-     * 
-     * @global type $wpdb
-     */
-    function woocomemrce_pricefiles_add_manufacturer_attribute()
-    {
-        global $wpdb;
-        
-        //@TODO: add check for WC Brands plugin
-
-        $manufacturer = $wpdb->get_row('SELECT * FROM ' . $wpdb->prefix . 'woocommerce_attribute_taxonomies WHERE attribute_name = "manufacturer"');
-        
-        if ($manufacturer == null)
-        {
-            $attribute = array(
-                'attribute_label' => __('Manufacturer', $this->plugin_slug),
-                'attribute_name' => 'manufacturer',
-                'attribute_type' => 'select',
-                'attribute_orderby' => 'name', //Or menu_order?
-            );
-
-            $wpdb->insert($wpdb->prefix . 'woocommerce_attribute_taxonomies', $attribute);
-
-            //Flush rewrite rules and cache
-            flush_rewrite_rules();
-            delete_transient('wc_attribute_taxonomies');
-
-            do_action('woocommerce_attribute_added', $wpdb->insert_id, $attribute);
-        }
-    }
-
-
 
     /**
      * 
@@ -545,16 +499,6 @@ class WC_Pricefiles
         return $s;
     }
 
-
-    function get_manufacturer_attribute_taxonomy()
-    {
-        global $wpdb;
-
-        $attribute_taxonomies = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "woocommerce_attribute_taxonomies WHERE attribute_name = 'manufacturer'");
-
-        return apply_filters('woocommerce_attribute_taxonomies', $attribute_taxonomies);
-    }
-
     function product_data_fields()
     {
         require(WP_PRICEFILES_PLUGIN_PATH . 'views/product-data.php');
@@ -570,9 +514,9 @@ class WC_Pricefiles
         {
             update_post_meta($post_id, $this->plugin_slug.'_sku_manufacturer', stripslashes($_POST[$this->plugin_slug.'_sku_manufacturer']));            
         }
-        if(!empty($_POST[$this->plugin_slug.'_manufacturer']))
+        if(!empty($_POST[$this->plugin_slug.'_sku_manufacturer_name']))
         {
-            update_post_meta($post_id, $this->plugin_slug.'_manufacturer', stripslashes($_POST[$this->plugin_slug.'_manufacturer']));            
+            update_post_meta($post_id, $this->plugin_slug.'_sku_manufacturer_name', stripslashes($_POST[$this->plugin_slug.'_sku_manufacturer_name']));
         }
         if(!empty($_POST[$this->plugin_slug.'_pricelist_cat']))
         {

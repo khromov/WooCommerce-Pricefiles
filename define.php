@@ -3,9 +3,7 @@
 //define('SCRIPT_DEBUG', TRUE);
 
 define('WC_PRICEFILES_PLUGIN_SLUG', 'woocommerce-pricefiles');
-
-define('WP_PRICEFILES_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
-define('WP_PRICEFILES_PLUGIN_URL', plugins_url('', __FILE__).'/');
+define('WC_PRICEFILES_TD', 'woocommerce-pricefiles');
 
 //global $wc_pricefiles_list, $default_shipping_destination, $pricerunner_categories;
 global $wc_pricefiles_globals;
@@ -21,7 +19,6 @@ $default_shipping_destination = array(
     'address_2' => '',
 );
 $wc_pricefiles_globals['default_shipping_destination'] = $default_shipping_destination;
-
 
 //Last updated: 2013-09-20
 $wc_pricefiles_categories = array(
