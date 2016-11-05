@@ -3,7 +3,7 @@ global $woocommerce, $post;
 ?>
 <div id="options_group_manufacturer" class="options_group">
 
-    <h3><?php _e('Optional information for price files integration'); ?></h3>
+    <h3 style="padding: 5px 20px 5px 15px !important;"><?php _e('WooCommerce Pricefiles', WC_PRICEFILES_TD); ?></h3>
 
     <?php woocommerce_wp_text_input(array(
         'id' => WC_PRICEFILES_PLUGIN_SLUG.'_ean_code', 
@@ -69,18 +69,17 @@ global $woocommerce, $post;
     $prisjakt_status_field = array(
         'id'    => WC_PRICEFILES_PLUGIN_SLUG.'_prisjakt_status',
         'label' => __('Prisjakt Status'),
-        'class' => 'chosen-select',
         'options' => array()
     );
     
-    $prisjakt_status_list = array(
+    $prisjakt_status_list = apply_filters('wc_pricefiles_prisjakt_status_list', array(
         "Normal" => "Normal",
         "Begagnad" => "Begagnad",
         "Ej köpbar" => "Ej köpbar",
         "Demo" => "Demo",
         "Nerladdning"=> "Nerladdning",
         "Avhämtning" => "Avhämtning"
-    );
+    ));
     
     foreach ($prisjakt_status_list as $id => $name) {
         $prisjakt_status_field['options'][esc_attr($id)] = esc_attr($name);
