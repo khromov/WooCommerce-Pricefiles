@@ -71,5 +71,3 @@ class WC_Pricefile_Pricerunner extends WC_Pricefile_Generator
     }
 
 }
-
-?>

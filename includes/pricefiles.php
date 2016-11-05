@@ -12,7 +12,6 @@
 
 class WC_Pricefiles
 {
-
     /**
      * Plugin version, used for autoatic updates and for cache-busting of style and script file references.
      *
@@ -87,7 +86,7 @@ class WC_Pricefiles
     }
 
     public function check_dependencies()
-    {   
+    {
         //Needed for is_plugin_active() call
         include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
@@ -99,29 +98,9 @@ class WC_Pricefiles
         else
         {
             $misc = new WC_Pricefiles_Misc();
-            
-            if(!empty($_GET['wcpf-deactivate-woocommerce-pricefiles']) && $_GET['wcpf-deactivate-woocommerce-pricefiles'] == 1)
-            {
-                die(plugin_basename(__FILE__));
-        
-                add_action('init', array($misc, 'deactivate_plugin'));
-                add_action('admin_notices', array($misc, 'deactivate_plugin_notice'));
-            }
-            /*
-            if(!empty($_GET['wcpf-activate-woocommerce']) && $_GET['wcpf-activate-woocommerce'] == 1)
-            {
-                add_action('init', array($misc, 'activate_woocommerce'));
-                add_action('admin_notices', array($misc, 'activate_woocommerce_notice'));
-            }
-            */
-            else
-            {
-                add_action('admin_notices', array($misc, 'woocommerce_not_active_notice'));
-            }
-
+            add_action('admin_notices', array($misc, 'woocommerce_not_active_notice'));
             return false;
         }
-    
     }
     
     function init()
@@ -1028,8 +1007,5 @@ class WC_Pricefiles
         return $up + $pricelist_cats;
         //return array_merge($up, $pricelist_cats);
     }
-
-
-
 }
 

@@ -70,5 +70,3 @@ class WC_Pricefile_Prisjakt extends WC_Pricefile_Generator
     }
 
 }
-
-?>

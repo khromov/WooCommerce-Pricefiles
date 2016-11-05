@@ -5,7 +5,7 @@ Generate pricefiles for integration with price comparison services.
 
 For more information, visit the plugin page on WordPress.org: https://wordpress.org/plugins/woocommerce-pricefiles/
 
-I strongly recomend downloading the plugin from [WordPress.org](https://wordpress.org/plugins/woocommerce-pricefiles/) and not from GitHub because the versions are tested before they are uploaded there.
+I strongly recommend downloading the plugin from [WordPress.org](https://wordpress.org/plugins/woocommerce-pricefiles/) and not from GitHub because the versions are tested before they are uploaded there.
 
 
 ###Supported services
