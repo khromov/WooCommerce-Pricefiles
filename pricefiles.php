@@ -7,11 +7,11 @@
  * @copyright 2014 Peter Elmered
  *
  * @wordpress-plugin
- * Plugin Name: WooCommerce Pricefiles
+ * Plugin Name: WooCommerce Pricefiles Lite
  * Plugin URI:  http://wordpress.org/plugins/woocommerce-pricefiles/
  * Description: Connect your WooCommerce shop to Price comparison sites with Pricefiles. Supports: Prisjakt / PriceSpy and Pricerunner
- * Version:     1.0.0-beta
- * Author:      Peter Elmered
+ * Version:     2.0
+ * Author:      Peter Elmered, khromov
  * Author URI:  http://elmered.com
  * Text Domain: woocommerce-pricefiles
  * Domain Path: /languages
