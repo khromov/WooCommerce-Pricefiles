@@ -23,60 +23,15 @@ global $woocommerce, $post;
         'description' => __('SKU refers to a Stock-keeping unit, a unique identifier for each distinct product and service that can be purchased.', $this->plugin_slug)
     )); ?>
 
-    <?php //woocommerce_wp_text_input(array('id' => '_manufacturer', 'class' => '', 'label' => __('Manufacturer', $this->plugin_slug), 'desc_tip' => 'true', 'description' => __('SKU refers to a Stock-keeping unit, a unique identifier for each distinct product and service that can be purchased.', $this->plugin_slug))); ?>
+    <?php woocommerce_wp_text_input(array(
+        'id' => WC_PRICEFILES_PLUGIN_SLUG.'_sku_manufacturer_name',
+        'class' => '',
+        'label' => '<abbr title="' . __('Manufacturer name', 'woocommerce') . '">' . __('Manufacturer name', $this->plugin_slug) . '</abbr>',
+        'desc_tip' => 'true',
+        'description' => __('Name of manufacturer.', $this->plugin_slug)
+    )); ?>
 
     <?php
-
-    $manufacturer = $this->get_manufacturer_attribute_taxonomy();
-    
-    // Get name of taxonomy we're now outputting (pa_xxx)
-    $attribute_taxonomy_name = wc_attribute_taxonomy_name( $manufacturer->attribute_name );
-
-    // Make sure it exists
-    if ( taxonomy_exists( $attribute_taxonomy_name ) ) 
-    {
-        $current = get_post_meta( $post->ID, WC_PRICEFILES_PLUGIN_SLUG.'_manufacturer', true );
-    
-        $manufacturer_field = array(
-            'id'    => WC_PRICEFILES_PLUGIN_SLUG.'_manufacturer',
-            'label' => __('Manufacturer'),
-            'class' => 'chosen-select',
-            //'wrapper_class' => '',
-            'options' => array()
-        );
-
-        $all_terms = get_terms($attribute_taxonomy_name, 'orderby=name&hide_empty=0');
-        if ($all_terms) 
-        {
-            $m = get_post_meta( $post->ID, WC_PRICEFILES_PLUGIN_SLUG.'_manufacturer', true );
-
-            if(empty($m))
-            {
-                $manufacturer_field['options'][''] = __('Choose manufacturer', WC_PRICEFILES_PLUGIN_SLUG);
-            }
-            
-            foreach ($all_terms as $term) 
-            {
-                //echo '<option value="' . esc_attr($term->slug) . '" ' . selected($term->slug, $current, false) . '>' . $term->name . '</option>';
-                $manufacturer_field['options'][$term->slug] = $term->name;
-            }
-
-            woocommerce_wp_select($manufacturer_field);
-        }
-        else
-        {
-            _e(
-                sprintf(
-                    'You need to add manufacturers to use the manufaturer field.<br />You can add manufacturers <a href="%s">here</a>', 
-                    admin_url('edit-tags.php?taxonomy=pa_manufacturer&post_type=product')
-                ), 
-                WC_PRICEFILES_PLUGIN_SLUG
-            );
-        }
-
-    }
-    
-    
     $pricelist_cats = WC_Pricefiles::get_instance()->get_category_list();
     
     // Ensure it exists 
