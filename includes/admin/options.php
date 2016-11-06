@@ -242,18 +242,6 @@ class WC_Pricefiles_Admin_Options extends WC_Pricefiles_Admin
             )
         );
         add_settings_field(
-            'append_attribute_to_variants', 
-            __('Append attribute ', $this->plugin_slug), 
-            array($this, 'checkbox_option_callback'), 
-            $this->plugin_slug . '_advanced_options_section', 
-            $this->plugin_slug . '_advanced_options', 
-            array(
-                'key'           => 'append_attribute_to_variants',
-                'label'         => __('Use debug mode', $this->plugin_slug),
-                'description'   => __('Output debug messages in pricefile during genereation. Only check this when debugging.', $this->plugin_slug),
-            )
-        );
-        add_settings_field(
             'shipping_methods', 
             __('Select shipping methods', $this->plugin_slug), 
             array($this, 'shipping_methods_callback'), 
