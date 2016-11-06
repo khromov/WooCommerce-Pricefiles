@@ -196,7 +196,6 @@ abstract class WC_Pricefile_Generator
         }
     }
 
-    //FIXME: Remove?
     function set_memory_limit() 
     {
         $ml = ini_get('memory_limit');
@@ -206,30 +205,8 @@ abstract class WC_Pricefile_Generator
         {
             return true;
         }
-        
-        preg_match('/(\d{1,10})([a-zA-Z]{1,2})/', $ml, $matches);
-        
-        //If memory limit is under 2G, try to set it to 2G
-        if(
-                !is_array($matches) || empty($matches) ||
-                ( $matches[2] == 'G' && $matches[1] < 2 ) || 
-                ($matches[2] == 'M' && $matches[1] < 2048) ||
-                ($matches[2] == 'K' && $matches[1] < 2048000)
-        )
-        {
+        else {
             ini_set('memory_limit', '2048M');
-
-            $new_ml = ini_get('memory_limit');
-
-            if($new_ml != '2048M')
-            {
-                //TODO: Debug log: Could not set memory limit
-                if($this->is_debug())
-                {
-                    echo 'Cound not set memory limit (Limit:'.$ml.')';
-                }
-                return false;
-            }
         }
     }
     
