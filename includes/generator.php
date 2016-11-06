@@ -60,10 +60,7 @@ abstract class WC_Pricefile_Generator
         
         if ( (!empty($this->options['disable_timeout']) && $this->options['disable_timeout'] == 1) )
         {
-            if(!@set_time_limit(0)) 
-            {
-                //TODO: Debug log: Could not set time limit
-            }
+            @set_time_limit(0);
         }
         
         if ( (!empty($this->options['set_memory_limit']) && $this->options['set_memory_limit'] == 1) )
