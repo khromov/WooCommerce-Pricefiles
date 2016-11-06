@@ -332,8 +332,7 @@ class WC_Pricefiles
             'cache_timeout'         => 0,
             'use_debug'             => 0,
             'set_memory_limit'      => 0,
-            'disable_timeout'       => 0,
-            'deactivate_ean_validation' => 0
+            'disable_timeout'       => 0
         );
         
         return apply_filters('default_pricelist_options', $defaults);

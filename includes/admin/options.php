@@ -329,21 +329,6 @@ class WC_Pricefiles_Admin_Options extends WC_Pricefiles_Admin
                 'description'   => __('Try to disable the PHP timeout when generating the pricefiles. Try using this when you get timeouts or 500 Internal server error. ', $this->plugin_slug),
             )
         );
-        
-        
-        add_settings_field(
-            'deactivate_ean_validation', 
-            __('Deactivate EAN validation', $this->plugin_slug), 
-            array($this, 'checkbox_option_callback'), 
-            $this->plugin_slug . '_advanced_options_section', 
-            $this->plugin_slug . '_advanced_options', 
-            array(
-                'key'           => 'deactivate_ean_validation',
-                'label'         => __('Deactivate EAN validation', $this->plugin_slug),
-                'description'   => __('Inactive the automatic EAN code validation when editing products.', $this->plugin_slug),
-            )
-        );
-        
     }
 
 
@@ -634,21 +619,7 @@ class WC_Pricefiles_Admin_Options extends WC_Pricefiles_Admin
 
         echo '<p style="clear: both">' . $args['description'] . '</p>';
     }
-    
-    function deactivate_ean_validation_callback($args)
-    {
-        $deactivate_ean_validation = (empty($this->plugin_options['deactivate_ean_validation']) ? array() : $this->plugin_options['deactivate_ean_validation'] );
 
-        echo '<label class="shipping-method"> ';
-        echo '<input type="checkbox" name="' . $this->plugin_slug . '_options[deactivate_ean_validation]" id="' . $this->plugin_slug . '_options_deactivate_ean_validation" value="1" ' . ($deactivate_ean_validation == 1 ? 'checked="checked"' : '') . '/>';
-        echo '<span>' . __('Deactivate EAN validation') . '</span>';
-        echo '</label>';
-
-        echo '<p style="clear: both">' . $args['description'] . '</p>';
-    }
-    
-    
-    
     function validate_input($input)
     {
         if (!is_array($input))
