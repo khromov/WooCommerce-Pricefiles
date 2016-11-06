@@ -98,17 +98,12 @@ abstract class WC_Pricefile_Generator
     }
 
     /**
-     * Genereates the pricefile
+     * Generates the pricefile
      * 
      * @since     0.1.0
      */
     public function generate_pricefile()
     {
-        if($this->read_cache())
-        {
-            die();
-        }
-
         $args = array(
             'post_type' => 'product',
             'posts_per_page' => -1,
@@ -188,7 +183,7 @@ abstract class WC_Pricefile_Generator
                 'variants_count' => $variants_count,
                 'excluded_count' => $excluded_count,
                 'hidden_count' => $hidden_count,
-                'status'        => $this->save_cache()
+                'status'        => 'no_cache'
             );
         } 
         else
@@ -200,7 +195,8 @@ abstract class WC_Pricefile_Generator
             }
         }
     }
-    
+
+    //FIXME: Remove?
     function set_memory_limit() 
     {
         $ml = ini_get('memory_limit');
@@ -234,175 +230,6 @@ abstract class WC_Pricefile_Generator
                 }
                 return false;
             }
-        }
-    }
-
-    /**
-     * Check if cache is activated
-     * 
-     * @return  bool   
-     */
-    protected function use_cache()
-    {
-        if (empty($this->options['use_cache']) || (!empty($this->options['use_cache']) && $this->options['use_cache'] != 1) )
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-    /**
-     * Check if cache can be written
-     * 
-     * @return  bool   
-     */
-    protected function can_read_cache()
-    {
-        if ( !$this->use_cache() )
-        {
-            return false;
-        }
-        
-        
-        if (!empty($_GET['refresh']) && $_GET['refresh'] == 1)
-        {            
-            return false;
-        }
-        
-        /*
-        if( $this->options['cache_timeout'] > 0)
-        {
-            if ( ( $time = get_transient(WC_PRICEFILES_PLUGIN_SLUG . '_file_cache_time_' . $this->pricefile_slug) ) === false )
-            {
-                if($this->is_debug())
-                {
-                    echo 'Cache file time expired. Cache timeout: '.$this->options['cache_timeout'];
-                }
-                return false;
-            }
-        }
-        */
-            
-        
-        return true;
-    }
-    
-    /**
-     * Read pricefile form cache
-     * 
-     * @return  boolstring  Status   
-     */
-    function read_cache()
-    {
-        if($this->can_read_cache() && $this->use_cache())
-        {
-            $cache_path = WP_CONTENT_DIR . '/cache/' . WC_PRICEFILES_PLUGIN_SLUG . '/' . $this->pricefile_slug . '.txt';
-
-            if (file_exists($cache_path))
-            {
-                if($this->is_debug())
-                {
-                    echo 'serverd from cache: ';
-                }
-                
-                echo file_get_contents($cache_path);
-
-                return true;
-            }
-            else
-            {
-                if($this->is_debug())
-                {
-                    echo 'Cache file not found';
-                }
-            }
-        }
-        
-        if ( $this->use_cache() )
-        {
-            ob_start();
-        }
-        
-        return false;
-    }
-
-    /**
-     * Save generated pricefile to cache
-     * 
-     * @return  string  Status   
-     */
-    protected function save_cache()
-    {
-        if ( !$this->use_cache() )
-        {
-            return 'no_cache';
-        }
-        
-        $data = ob_get_clean();
-        
-        $cache_path = WP_CONTENT_DIR . '/cache/' . WC_PRICEFILES_PLUGIN_SLUG . '/' . $this->pricefile_slug . '.txt';
-
-        //If files does not exist, test if we can create it
-        if(!file_exists($cache_path))
-        {
-            $w = file_put_contents($cache_path, '.');
-        }
-        
-        if (!is_writable($cache_path))
-        {
-            if (!file_exists(dirname($cache_path)))
-            {
-                if (!mkdir(dirname($cache_path), 0777, true))
-                {
-                    if($this->is_debug())
-                    {
-                        echo 'Could not create cache path (' . $cache_path . '). Not writable by PHP';
-                    }
-                }
-            } else
-            {
-                if($this->is_debug())
-                {
-                    echo 'Cache path (' . $cache_path . ') is not writable by PHP';
-                }
-            }
-            $return = 'not_writable';
-        } else
-        {
-            $return = file_put_contents($cache_path, $data);
-            if ($return && $return > 0)
-            {
-                update_option(WC_PRICEFILES_PLUGIN_SLUG . '_cache_last_updated_' . $this->pricefile_slug, current_time('timestamp'));
-                //set_transient(WC_PRICEFILES_PLUGIN_SLUG . '_file_cache_time_' . $this->pricefile_slug, time(), 25 * HOUR_IN_SECONDS);
-                $return = 'cache_written';
-            }
-            else
-            {
-                $return = 'cache_not_writable';
-                if($this->is_debug())
-                {
-                    echo 'Cache not written';
-                }
-            }
-        }
-        
-        if($this->is_debug())
-        {
-            echo ucfirst($this->pricefile_slug).' cache status: '.$return."\n";
-        }
-        
-        if(empty($_GET['output']) || $_GET['output'] != 'json')
-        {
-            echo $data;
-            // Stop execution completely to prevent garbage data (unlike wp_die()). 
-            die(); 
-        }
-        else
-        {
-            return $return;
         }
     }
     
@@ -443,28 +270,3 @@ abstract class WC_Pricefile_Generator
     }
 
 }
-
-/*
- * This function exist only in PHP >= 5.3.
- * For for previous versions, we need to emulate this function.
- * Ugly hack, but it works.
- */
-if (!function_exists('get_called_class'))
-{
-    function get_called_class()
-    {
-        $bt = debug_backtrace();
-        $l = 0;
-        do
-        {
-            $l++;
-            $lines = file($bt[$l]['file']);
-            $callerLine = $lines[$bt[$l]['line']-1];
-            preg_match('/([a-zA-Z0-9\_]+)::'.$bt[$l]['function'].'/', $callerLine, $matches);
-        } while ($matches[1] === 'parent' && $matches[1]);
-
-        return $matches[1];
-    }
-}
-
-?>

@@ -306,35 +306,6 @@ class WC_Pricefiles_Admin_Options extends WC_Pricefiles_Admin
             $this->plugin_slug . '_advanced_options_section'
         );
         add_settings_field(
-            'use_cache', 
-            __('Use cache for pricefile', $this->plugin_slug), 
-            array($this, 'use_cache_callback'), 
-            $this->plugin_slug . '_advanced_options_section', 
-            $this->plugin_slug . '_advanced_options', 
-            array(
-                'key'           => 'use_cache',
-                'label'         => __('Use cache', $this->plugin_slug),
-                'description' => __('Use cache for pricefile. Usefull if you have many products. Needs cron to refresh cache.<br />' . 
-                        WP_CONTENT_DIR . '/cache/' . WC_PRICEFILES_PLUGIN_SLUG . '/' . ' needs to be writable by PHP', $this->plugin_slug).
-                        ' ('.(is_writable(WP_CONTENT_DIR . '/cache/' . WC_PRICEFILES_PLUGIN_SLUG . '/') ? '<span style="color: green">'.__('Is writable', $this->plugin_slug).'</span>' : '<span style="color: red">'.__('NOT WRITABLE', $this->plugin_slug).'</span>' ).').'       
-            )
-        );
-        /*
-        add_settings_field(
-            'cache_timeout', 
-            __('Cache timeout', $this->plugin_slug), 
-            array($this, 'text_option_callback'), 
-            $this->plugin_slug . '_advanced_options_section', 
-            $this->plugin_slug . '_advanced_options', 
-            array(
-                'key'           => 'cache_timeout',
-                'default'       => 0,
-                //'label'         => __('Cache timeout', $this->plugin_slug),
-                'description'   => __('Hours before pricefile cache expires. 0 = no timeout<br />Default: <strong>0</strong>.', $this->plugin_slug),
-            )
-        );
-        */
-        add_settings_field(
             'use_debug', 
             __('Debug mode', $this->plugin_slug), 
             array($this, 'checkbox_option_callback'), 
