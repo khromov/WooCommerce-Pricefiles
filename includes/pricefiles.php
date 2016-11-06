@@ -111,10 +111,6 @@ class WC_Pricefiles
         {
             return false;
         }
-        
-        // Load public-facing style sheet and JavaScript.
-        //add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
-        //add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 
         if (is_admin())
         {
@@ -553,16 +549,11 @@ class WC_Pricefiles
     {
         global $wp_scripts;
 
+        //FIXME Needed?
         wp_enqueue_style('woocommerce_frontend_styles', WC()->plugin_url() . '/assets/css/woocommerce.css');
-
-        $jquery_version = isset($wp_scripts->registered['jquery-ui-core']->ver) ? $wp_scripts->registered['jquery-ui-core']->ver : '1.9.2';
-
-        wp_enqueue_style('jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $jquery_version . '/themes/smoothness/jquery-ui.css');
-
         wp_enqueue_style('woocommerce_admin_styles', WC()->plugin_url() . '/assets/css/admin.css');
 
         wp_enqueue_style($this->plugin_slug . '-admin-styles', WP_PRICEFILES_PLUGIN_URL . 'assets/css/admin.css', array(), self::VERSION);
-
         wp_enqueue_style($this->plugin_slug . '-admin-options-styles', WP_PRICEFILES_PLUGIN_URL . 'assets/css/admin-options.css', array(), self::VERSION);
     }
 
@@ -575,22 +566,11 @@ class WC_Pricefiles
      */
     public function enqueue_admin_scripts()
     {
-        //global $current_screen, $typenow, $woocommerce;
+        wp_enqueue_script($this->plugin_slug . '-admin-script', WP_PRICEFILES_PLUGIN_URL . 'assets/js/admin-options.js', array('jquery'), self::VERSION);
 
-        wp_enqueue_script($this->plugin_slug . '-admin-script', WP_PRICEFILES_PLUGIN_URL . 'assets/js/admin-product-options.js', array('jquery', 'chosen'), self::VERSION);
-
-        wp_enqueue_script($this->plugin_slug . '-admin-options-script', WP_PRICEFILES_PLUGIN_URL . 'assets/js/admin-options.js', array('jquery', 'chosen', 'ajax-chosen'), self::VERSION);
-    
         //Inject variables into our scripts
         wp_localize_script($this->plugin_slug . '-admin-script', 'wc_pricelists_options', array(
-            'woocommerce_url'           => WC()->plugin_url(),
-            'ajax_url'                  => admin_url('/admin-ajax.php'),
-            'search_products_nonce' 	=> wp_create_nonce("search-products"),
-        ));
-        
-        wp_localize_script($this->plugin_slug . '-admin-options-script', 'wc_pricelists_options', array(
-            'woocommerce_url'           => WC()->plugin_url(),
-            'site_url'                  => get_bloginfo('url'),
+            'woocommerce_pricefiles_url'           => WP_PRICEFILES_PLUGIN_URL,
             'ajax_url'                  => admin_url('/admin-ajax.php'),
             'search_products_nonce' 	=> wp_create_nonce("search-products"),
         ));
