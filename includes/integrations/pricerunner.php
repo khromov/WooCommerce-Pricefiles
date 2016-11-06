@@ -23,7 +23,7 @@ class WC_Pricefile_Pricerunner extends WC_Pricefile_Generator
     protected function print_header()
     {
         $columns = array(
-            'Category','SKU','Price','Product URL','Product Name','Manufacturer SKU','Manufacturer','EAN','Description','Graphic URL','In Stock','Stock Level','Delivery Time','Shippingcost'
+            'Category', 'SKU', 'Price', 'Product URL', 'Product Name', 'Manufacturer SKU', 'Manufacturer', 'EAN', 'Description', 'Graphic URL', 'In Stock', 'Stock Level', 'Delivery Time', 'Shipping Cost'
         );
         
         $header = '';
